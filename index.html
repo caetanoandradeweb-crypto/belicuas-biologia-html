@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Célula Procarionte</title>
+<style>
+/* =====================================================
+   1. CORES E VARIÁVEIS DO SITE
+   ===================================================== */
+
+:root {
+    --bg: #f1fbf4;
+    --card: #ffffff;
+    --tx: #12302a;
+    --mut: #4f6f66;
+    --ac: #10a37f;
+    --ac2: #f2761f;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #0b1f1c;
+        --card: #12312c;
+        --tx: #e6fff7;
+        --mut: #9cc7bb;
+    }
+}
+
+:root[data-theme="dark"] {
+    --bg: #0b1f1c;
+    --card: #12312c;
+    --tx: #e6fff7;
+    --mut: #9cc7bb;
+}
+
+
+/* =====================================================
+   2. CONFIGURAÇÕES GERAIS
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+    margin: 0;
+
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    font-family: "Trebuchet MS", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--tx);
+
+    line-height: 1.5;
+}
+
+main {
+    max-width: 860px;
+    margin: auto;
+    padding: 0 16px 32px;
+}
+
+
+/* =====================================================
+   3. HERO
+   ===================================================== */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+
+    text-align: center;
+    padding: 48px 16px 56px;
+
+    color: #fff;
+
+    background: linear-gradient(
+        135deg,
+        #0e7c66,
+        #16a085 50%,
+        #3b82c4
+    );
+}
+
+.hero h1 {
+    position: relative;
+
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    margin: 0 0 8px;
+}
+
+.hero p {
+    position: relative;
+
+    max-width: 520px;
+    margin: 0 auto 18px;
+}
+
+
+/* =====================================================
+   4. BOLHAS
+   ===================================================== */
+
+.bolha {
+    position: absolute;
+    bottom: -60px;
+
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+
+    animation: sobe infinite;
+}
+
+@keyframes sobe {
+    to {
+        transform: translateY(-420px);
+        opacity: 0;
+    }
+}
+
+/* Respeita usuários que preferem menos animações */
+@media (prefers-reduced-motion: reduce) {
+    .bolha {
+        animation: none;
+    }
+}
+
+
+/* =====================================================
+   5. TÍTULOS
+   ===================================================== */
+
+h2 {
+    margin: 36px 0 8px;
+}
+
+
+/* =====================================================
+   6. BOTÕES
+   ===================================================== */
+
+.btn {
+    display: inline-block;
+
+    background: var(--ac2);
+    color: #fff;
+
+    border: 0;
+    border-radius: 99px;
+
+    padding: 10px 18px;
+    margin: 6px 6px 0 0;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+
+/* =====================================================
+   7. CARTÕES
+   ===================================================== */
+
+.card {
+    background: var(--card);
+
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin: 10px 0;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+    margin: 0 0 4px;
+}
+
+
+/* =====================================================
+   8. CENA INTERATIVA
+   ===================================================== */
+
+#cena {
+    height: min(75vw, 430px);
+    min-height: 300px;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    background: radial-gradient(
+        circle at 50% 40%,
+        #2a8f80,
+        #06201d
+    );
+}
+
+#cena canvas {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: grab;
+}
+
+
+/* =====================================================
+   9. BOTÕES DE OPÇÕES
+   ===================================================== */
+
+.chip {
+    border: 3px solid;
+    border-radius: 99px;
+
+    background: var(--card);
+    color: var(--tx);
+
+    padding: 6px 12px;
+    margin: 6px 6px 0 0;
+
+    font: inherit;
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   10. ALTERNATIVAS E RESPOSTAS
+   ===================================================== */
+
+.op {
+    display: block;
+    width: 100%;
+
+    text-align: left;
+
+    margin: 6px 0;
+    padding: 10px 14px;
+
+    border-radius: 12px;
+    border: 2px solid var(--ac);
+
+    background: var(--card);
+    color: var(--tx);
+
+    font: inherit;
+    cursor: pointer;
+}
+
+.op.certo {
+    background: #2fb872;
+    color: #fff;
+}
+
+.op.errado {
+    background: #d9534f;
+    color: #fff;
+}
+
+
+/* =====================================================
+   11. IMAGENS
+   ===================================================== */
+
+.galeria {
+    display: grid;
+
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(180px, 1fr)
+    );
+
+    gap: 12px;
+}
+
+.galeria figure {
+    margin: 0;
+
+    position: relative;
+
+    aspect-ratio: 4 / 3;
+
+    border-radius: 14px;
+    overflow: hidden;
+
+    background: var(--card);
+
+    display: grid;
+    place-items: center;
+
+    border: 2px dashed var(--ac);
+
+    text-align: center;
+    color: var(--mut);
+}
+
+.galeria img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.galeria figcaption {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+
+    padding: 4px 8px;
+
+    font-size: 0.85rem;
+}
+
+
+/* =====================================================
+   12. RODAPÉ
+   ===================================================== */
+
+footer {
+    text-align: center;
+
+    padding: 20px;
+
+    color: var(--mut);
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div id="bolhas"></div>
+  <h1>Célula Procarionte</h1>
+  <p>Entre no mundo microscópico e descubra as peças de uma bactéria!</p>
+  <a class="btn" href="#celula">Explorar em 3D ↓</a>
+</header>
+
+<main>
+  <section id="celula">
+    <h2>Explore a célula em 3D</h2>
+    <p>Arraste para girar. Toque nas partes da célula ou nos botões para saber mais!</p>
+    <div id="cena"></div>
+    <div id="chips"></div>
+    <div id="info" class="card"><h3>Escolha uma parte</h3><p>Toque na célula ou em um dos botões acima.</p></div>
+    <button class="btn" id="btnGiro">⏸ Parar giro</button>
+    <button class="btn" onclick="zoomar(-2)">🔍 Aproximar</button>
+    <button class="btn" onclick="zoomar(2)">🔎 Afastar</button>
+  </section>
+
+  <section>
+    <h2>Você sabia?</h2>
+    <div class="card" id="fato">Clique no botão para sortear um fato curioso!</div>
+    <button class="btn" onclick="novoFato()">Sortear fato</button>
+  </section>
+
+  <section>
+    <h2>Mini quiz</h2>
+    <div class="card" id="quiz"></div>
+  </section>
+
+  <section>
+    <h2>Fotos da maquete</h2>
+    <div class="galeria" id="galeria"></div>
+  </section>
+</main>
+
+<footer>Projeto de Biologia • IFSP</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===== TEXTOS DA CÉLULA ===== */
+const PARTES = {
+  parede:     {nome:"Parede celular", cor:"#d9b36c", txt:"Uma armadura que dá forma à bactéria e a protege. É feita de peptideoglicano. Alguns antibióticos, como a penicilina, atacam a parede!"},
+  membrana:   {nome:"Membrana plasmática", cor:"#ff9a4d", txt:"Funciona como um porteiro: controla o que entra e o que sai da célula. Nas bactérias, ela também ajuda a produzir energia."},
+  citoplasma: {nome:"Citoplasma", cor:"#6fd3c0", txt:"Uma espécie de gelatina que preenche a célula. É onde ficam o DNA, os ribossomos e onde acontecem muitas reações químicas."},
+  nucleoide:  {nome:"Nucleoide (DNA)", cor:"#a56cf0", txt:"Procariontes não têm núcleo! O DNA fica solto no citoplasma, em uma região chamada nucleoide. É o manual de instruções da célula."},
+  plasmideo:  {nome:"Plasmídeo", cor:"#ff5c8a", txt:"Um pequeno anel extra de DNA. Pode carregar genes especiais, como os de resistência a antibióticos."},
+  ribossomos: {nome:"Ribossomos", cor:"#4d7cff", txt:"Pequenas fábricas de proteínas. Existem aos milhares dentro da bactéria e leem as instruções do DNA."},
+  flagelo:    {nome:"Flagelo", cor:"#8bd24a", txt:"Uma hélice em forma de cauda que gira como um motorzinho e faz a bactéria nadar."},
+  pili:       {nome:"Fímbrias e pili", cor:"#f2d94e", txt:"Pelinhos na superfície. Ajudam a bactéria a grudar nas coisas e algumas até trocam DNA com outras bactérias."}
+};
+
+/* ===== MODELO 3D ===== */
+const caixa = document.getElementById("cena");
+const materiais = {}, alvos = [];
+let rotY = 0.6, rotX = 0.2, girando = true, distancia = 14, arrasto = null;
+let renderer, camera, cena, pivo, celula;
+
+function material(parte, opacidade){
+  const m = new THREE.MeshStandardMaterial({color:PARTES[parte].cor, roughness:0.5});
+  m.userData.base = opacidade || 1;
+  if(opacidade){ m.transparent = true; m.opacity = opacidade; m.depthWrite = false; m.side = THREE.DoubleSide; }
+  materiais[parte] = m;
+}
+function adicionar(parte, geometria, x, y, z, casca){
+  const malha = new THREE.Mesh(geometria, materiais[parte]);
+  malha.position.set(x, y, z);
+  malha.userData.parte = parte;
+  malha.userData.casca = !!casca; 
+  celula.add(malha); alvos.push(malha);
+  return malha;
+}
+
+function montar3D(){
+  renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  caixa.appendChild(renderer.domElement);
+  cena = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  cena.add(new THREE.AmbientLight(0xffffff, 0.75));
+  const luz = new THREE.DirectionalLight(0xffffff, 0.8); luz.position.set(5, 8, 10); cena.add(luz);
+  pivo = new THREE.Group(); cena.add(pivo);
+  celula = new THREE.Group(); celula.position.x = -1.5; pivo.add(celula);
+
+  material("parede", 0.25); material("membrana", 0.3); material("citoplasma", 0.15);
+  ["nucleoide","plasmideo","ribossomos","flagelo","pili"].forEach(p => material(p));
+
+  // corpo da bactéria:
+  [["parede",2],["membrana",1.88],["citoplasma",1.8]].forEach(([p, r]) => {
+    adicionar(p, new THREE.SphereGeometry(r, 48, 32), 0, 0, 0, true).scale.set(1.6, 1, 1);
+  });
+  adicionar("nucleoide", new THREE.TorusKnotGeometry(0.55, 0.16, 90, 12), -0.3, 0, 0);
+  adicionar("plasmideo", new THREE.TorusGeometry(0.28, 0.07, 12, 24), 1.6, 0.6, 0.4).rotation.x = 1;
+
+  // ribossomos:
+  const bolinha = new THREE.SphereGeometry(0.1, 10, 10);
+  for(let i = 0; i < 45; i++){
+    let x, y, z;
+    do { x = (Math.random()*2-1)*2.4; y = (Math.random()*2-1)*1.5; z = (Math.random()*2-1)*1.5; }
+    while((x*x)/5.76 + (y*y)/2.25 + (z*z)/2.25 > 1);
+    adicionar("ribossomos", bolinha, x, y, z);
+  }
+  // flagelo
+  const pontos = [];
+  for(let i = 0; i < 21; i++) pontos.push(new THREE.Vector3(3.2 + i*0.15, Math.sin(i*0.7)*0.25, Math.cos(i*0.7)*0.25));
+  adicionar("flagelo", new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pontos), 60, 0.07, 8), 0, 0, 0);
+  // pili:
+  for(let i = 0; i < 16; i++){
+    const d = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+    if(d.x > 0.85) continue;
+    const p = new THREE.Vector3(d.x*3.2, d.y*2, d.z*2);
+    const n = new THREE.Vector3(p.x/10.24, p.y/4, p.z/4).normalize();
+    const v = adicionar("pili", new THREE.CylinderGeometry(0.03, 0.03, 0.7, 6), p.x + n.x*0.3, p.y + n.y*0.3, p.z + n.z*0.3);
+    v.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), n);
+  }
+  ajustar(); window.addEventListener("resize", ajustar);
+  ligarMouse(); animar();
+}
+
+function ajustar(){
+  const w = caixa.clientWidth, h = caixa.clientHeight;
+  renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+}
+function animar(){
+  requestAnimationFrame(animar);
+  if(girando && !arrasto) rotY += 0.004;
+  pivo.rotation.y = rotY; pivo.rotation.x = rotX;
+  camera.position.z = distancia;
+  renderer.render(cena, camera);
+}
+function zoomar(passo){ distancia = Math.max(8, Math.min(22, distancia + passo)); }
+
+function ligarMouse(){
+  const el = renderer.domElement, raio = new THREE.Raycaster(), ponto = new THREE.Vector2();
+  el.style.touchAction = "none";
+  el.addEventListener("pointerdown", e => { arrasto = {x:e.clientX, y:e.clientY, mov:0}; el.setPointerCapture(e.pointerId); });
+  el.addEventListener("pointermove", e => {
+    if(!arrasto) return;
+    const dx = e.clientX - arrasto.x, dy = e.clientY - arrasto.y;
+    arrasto.x = e.clientX; arrasto.y = e.clientY; arrasto.mov += Math.abs(dx) + Math.abs(dy);
+    rotY += dx*0.01; rotX = Math.max(-1.2, Math.min(1.2, rotX + dy*0.01));
+  });
+  el.addEventListener("pointerup", e => {
+    if(arrasto && arrasto.mov < 6){        
+      const r = el.getBoundingClientRect();
+      ponto.set(((e.clientX - r.left)/r.width)*2 - 1, -((e.clientY - r.top)/r.height)*2 + 1);
+      raio.setFromCamera(ponto, camera);
+      const hits = raio.intersectObjects(alvos);
+      const h = hits.find(x => !x.object.userData.casca) || hits[0];
+      if(h) escolher(h.object.userData.parte);
+    }
+    arrasto = null;
+  });
+}
+
+/* ===== BOTÕES ===== */
+const botoes = {};
+function escolher(chave){
+  const p = PARTES[chave];
+  document.getElementById("info").innerHTML = "<h3>" + p.nome + "</h3><p>" + p.txt + "</p>";
+  for(const nome in materiais){                  
+    const m = materiais[nome], ligado = nome === chave;
+    m.emissive.setHex(ligado ? 0x555555 : 0);
+    m.opacity = ligado ? Math.min(1, m.userData.base + 0.3) : m.userData.base;
+  }
+  for(const nome in botoes){
+    botoes[nome].style.background = nome === chave ? PARTES[nome].cor : "";
+    botoes[nome].style.color = nome === chave ? "#12302a" : "";
+  }
+}
+for(const chave in PARTES){
+  const b = document.createElement("button");
+  b.className = "chip"; b.textContent = PARTES[chave].nome; b.style.borderColor = PARTES[chave].cor;
+  b.onclick = () => escolher(chave);
+  botoes[chave] = b; document.getElementById("chips").appendChild(b);
+}
+document.getElementById("btnGiro").onclick = function(){
+  girando = !girando; this.textContent = girando ? "⏸ Parar giro" : "▶ Girar";
+};
+
+/* ===== FATOS CURIOSOS ===== */
+const FATOS = [
+  "Seu corpo abriga quase tantas bactérias quanto células humanas!",
+  "Em condições ideais, algumas bactérias se dividem em apenas 20 minutos.",
+  "As bactérias estão na Terra há mais de 3 bilhões de anos. Elas foram um dos primeiros seres vivos!",
+  "O flagelo de uma bactéria pode girar mais de 100 voltas por segundo.",
+  "O iogurte é feito com bactérias (como os lactobacilos) que transformam o leite.",
+  "Procariontes vivem em vulcões, no gelo, no fundo do mar e até dentro de você.",
+  "As arqueias também são procariontes, mas formam um grupo diferente das bactérias."
+];
+let ultimo = -1;
+function novoFato(){
+  let i; do { i = Math.floor(Math.random()*FATOS.length); } while(i === ultimo);
+  ultimo = i; document.getElementById("fato").textContent = "🦠 " + FATOS[i];
+}
+
+/* ===== MINI QUIZ ===== */
+const PERGUNTAS = [
+  {p:"Onde fica o DNA de uma bactéria?", o:["Dentro do núcleo","No nucleoide, solto no citoplasma","Na mitocôndria"], c:1},
+  {p:"Qual parte ajuda a bactéria a nadar?", o:["Ribossomo","Parede celular","Flagelo"], c:2},
+  {p:"Quem fabrica as proteínas?", o:["Ribossomos","Plasmídeo","Fímbrias"], c:0},
+  {p:"Uma célula procarionte tem núcleo?", o:["Sim, um grande","Não, não tem","Tem dois"], c:1}
+];
+let numero = 0, pontos = 0, travado = false;
+function mostrarQuiz(){
+  const q = document.getElementById("quiz");
+  if(numero >= PERGUNTAS.length){
+    q.innerHTML = "<h3>Fim! Você acertou " + pontos + " de " + PERGUNTAS.length + " 🎉</h3><button class='btn' onclick='reiniciar()'>Jogar de novo</button>";
+    return;
+  }
+  const item = PERGUNTAS[numero];
+  q.innerHTML = "<h3>" + (numero+1) + ". " + item.p + "</h3>" +
+    item.o.map((t, i) => "<button class='op' onclick='responder(" + i + ")'>" + t + "</button>").join("");
+}
+function responder(i){
+  if(travado) return; travado = true;
+  const botoesOp = document.querySelectorAll(".op");
+  botoesOp[PERGUNTAS[numero].c].classList.add("certo");
+  if(i === PERGUNTAS[numero].c) pontos++; else botoesOp[i].classList.add("errado");
+  setTimeout(() => { numero++; travado = false; mostrarQuiz(); }, 1200);
+}
+function reiniciar(){ numero = 0; pontos = 0; mostrarQuiz(); }
+
+/* ===== FOTOS DA MAQUETE ===== */
+const FOTOS = [
+  {src:"foto1.jpg", legenda:"Vista de cima"},
+  {src:"foto2.jpg", legenda:"Vista lateral"},
+  {src:"foto3.jpg", legenda:"Detalhes da maquete"}
+];
+const galeria = document.getElementById("galeria");
+FOTOS.forEach((f, i) => {
+  const quadro = document.createElement("figure");
+  const img = document.createElement("img");
+  img.src = f.src; img.alt = f.legenda;
+  img.onload = () => { quadro.style.border = "none"; };
+  img.onerror = () => { quadro.innerHTML = "<br>Foto " + (i + 1); };
+  const legenda = document.createElement("figcaption");
+  legenda.textContent = f.legenda;
+  quadro.append(img, legenda);
+  galeria.appendChild(quadro);
+});
+
+/* ===== TOPO E INÍCIO ===== */
+for(let i = 0; i < 10; i++){
+  const b = document.createElement("span"), t = 20 + Math.random()*50;
+  b.className = "bolha";
+  b.style.cssText = "left:" + Math.random()*100 + "%;width:" + t + "px;height:" + t + "px;animation-duration:" + (6 + Math.random()*6) + "s;animation-delay:-" + Math.random()*8 + "s";
+  document.getElementById("bolhas").appendChild(b);
+}
+mostrarQuiz();
+try { montar3D(); } catch(e) { caixa.innerHTML = "<p style='color:#fff;padding:20px'>Seu navegador não conseguiu abrir o 3D. Os botões abaixo ainda funcionam!</p>"; }
+</script>
+</body>
+</html>
